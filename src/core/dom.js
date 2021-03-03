@@ -18,7 +18,6 @@ class Dom {
   }
 
   on(eventType, callback) {
-    this.$$listeners[eventType] = callback
     this.$el.addEventListener(eventType, callback)
   }
 
@@ -38,7 +37,6 @@ class Dom {
     return this
   }
 }
-
 export function $(selector) {
   return new Dom(selector)
 }
@@ -48,6 +46,5 @@ $.create = (tagName, classes = '') => {
   if (classes) {
     el.classList.add(classes)
   }
-
   return $(el)
 }
