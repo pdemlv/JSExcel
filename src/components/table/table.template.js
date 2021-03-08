@@ -13,7 +13,7 @@ function toColumn(col, index) {
   return `
     <div class="column" data-type="resizable" data-col="${index}">
       ${col}
-      <div class="col-resize" data-resize="row"></div>
+      <div class="col-resize" data-resize="col"></div>
     </div>
   `
 }
@@ -21,11 +21,11 @@ function toColumn(col, index) {
 function createRow(index, content) {
   const resize = index ? `<div class="row-resize" data-resize="row"></div>` : ''
   return `
-    <div class="row">
+    <div class="row" data-type="resizable">
       <div class="row-info">
         ${index ? index : ''}
         ${resize}
-        <div class="row-resize"></div>
+        <div class="row-resize" data-resize="row"></div>
         </div>
       <div class="row-data">${content}</div>
     </div>
