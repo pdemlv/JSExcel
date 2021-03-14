@@ -1,7 +1,8 @@
 class Dom {
   constructor(selector) {
-    this.$el = typeof selector === 'string' ?
-      document.querySelector(selector) : selector
+    this.$el = typeof selector === 'string'
+      ? document.querySelector(selector)
+      : selector
   }
 
   html(html) {
@@ -10,6 +11,10 @@ class Dom {
       return this
     }
     return this.$el.outerHTML.trim()
+  }
+
+  text(text) {
+    this.$el.textContent = text
   }
 
   clear() {
@@ -25,15 +30,21 @@ class Dom {
     this.$el.removeEventListener(eventType, callback)
   }
 
+  find(selector) {
+    return $(this.$el.querySelector(selector))
+  }
+
   append(node) {
     if (node instanceof Dom) {
       node = node.$el
     }
+
     if (Element.prototype.append) {
       this.$el.append(node)
     } else {
       this.$el.appendChild(node)
     }
+
     return this
   }
 
@@ -54,9 +65,38 @@ class Dom {
   }
 
   css(styles = {}) {
-    Object.keys(styles).forEach(key => this.$el.style[key] = styles[key])
+    Object
+        .keys(styles)
+        .forEach(key => {
+          this.$el.style[key] = styles[key]
+        })
+  }
+
+  id(parse) {
+    if (parse) {
+      const parsed = this.id().split(':')
+      return {
+        row: +parsed[0],
+        col: +parsed[1]
+      }
+    }
+    return this.data.id
+  }
+
+  focus() {
+    this.$el.focus()
+    return this
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className)
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className)
   }
 }
+
 export function $(selector) {
   return new Dom(selector)
 }
