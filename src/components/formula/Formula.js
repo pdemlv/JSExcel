@@ -1,5 +1,5 @@
-import { ExcelComponent } from '@core/ExcelComponent'
-import { $ } from '@core/dom'
+import {ExcelComponent} from '@core/ExcelComponent'
+import {$} from '@core/dom'
 
 export class Formula extends ExcelComponent {
   static className = 'excel__formula'
@@ -30,7 +30,7 @@ export class Formula extends ExcelComponent {
     })
   }
 
-  storeChanged({ currentText }) {
+  storeChanged({currentText}) {
     this.$formula.text(currentText)
   }
 
