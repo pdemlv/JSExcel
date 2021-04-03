@@ -1,11 +1,12 @@
-import {ExcelComponent} from '@core/ExcelComponent'
-import {$} from '@core/dom'
-import {createTable} from '@/components/table/table.template'
-import {resizeHandler} from '@/components/table/table.resize'
-import {isCell, matrix, nextSelector, shouldResize} from './table.functions'
-import {TableSelection} from '@/components/table/TableSelection'
+import { ExcelComponent } from '@core/ExcelComponent'
+import { $ } from '@core/dom'
+import { createTable } from '@/components/table/table.template'
+import { resizeHandler } from '@/components/table/table.resize'
+import { isCell, matrix, nextSelector, shouldResize } from './table.functions'
+import { TableSelection } from '@/components/table/TableSelection'
 import * as actions from '@/redux/actions'
-import {defaultStyles} from '@/constants'
+import { defaultStyles } from '@/constants'
+import { parse } from '@core/parse'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -31,9 +32,9 @@ export class Table extends ExcelComponent {
 
     this.selectCell(this.$root.find('[data-id="0:0"]'))
 
-    this.$on('formula:input', text => {
-      this.selection.current.text(text)
-      this.updateTextInStore(text)
+    this.$on('formula:input', value => {
+      this.selection.current.attr('data-value', value).text(parse(value))
+      this.updateTextInStore(value)
     })
 
     this.$on('formula:done', () => {
@@ -53,7 +54,6 @@ export class Table extends ExcelComponent {
     this.selection.select($cell)
     this.$emit('table:select', $cell)
     const styles = $cell.getStyles(Object.keys(defaultStyles))
-    console.log('Styles to dispatch', styles)
     this.$dispatch(actions.changeStyles(styles))
   }
 
@@ -73,7 +73,7 @@ export class Table extends ExcelComponent {
       const $target = $(event.target)
       if (event.shiftKey) {
         const $cells = matrix($target, this.selection.current)
-            .map(id => this.$root.find(`[data-id="${id}"]`))
+          .map(id => this.$root.find(`[data-id="${id}"]`))
         this.selection.selectGroup($cells)
       } else {
         this.selectCell($target)
@@ -91,7 +91,7 @@ export class Table extends ExcelComponent {
       'ArrowUp'
     ]
 
-    const {key} = event
+    const { key } = event
 
     if (keys.includes(key) && !event.shiftKey) {
       event.preventDefault()
